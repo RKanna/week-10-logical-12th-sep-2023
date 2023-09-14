@@ -131,3 +131,69 @@ console.log(nthPrime(5));
 console.log(nthPrime(10));
 
 //8.Implement a function that sorts an array of objects by a specific property in ascending order.
+function sortByProperty(arr, prop) {
+  return arr.slice().sort((a, b) => {
+    if (a[prop] < b[prop]) {
+      return -1;
+    } else if (a[prop] > b[prop]) {
+      return 1;
+    } else {
+      return 0;
+    }
+  });
+}
+const people = [
+  { name: "John", age: 30 },
+  { name: "Alice", age: 25 },
+  { name: "Bob", age: 35 },
+];
+console.log(sortByProperty(people, "age"));
+
+//9.Write a function that performs a deep merge of two objects, combining their properties.
+function deepMerge(obj1, obj2) {
+  if (typeof obj1 !== "object" || typeof obj2 !== "object") {
+    return obj2;
+  }
+  if (Array.isArray(obj1) && Array.isArray(obj2)) {
+    return obj1.concat(obj2);
+  }
+  const result = { ...obj1 };
+  for (const key in obj2) {
+    if (obj2.hasOwnProperty(key)) {
+      if (typeof obj2[key] === "object" && obj2[key] !== null) {
+        if (typeof result[key] === "object" && result[key] !== null) {
+          result[key] = deepMerge(result[key], obj2[key]);
+        } else {
+          result[key] = deepMerge({}, obj2[key]);
+        }
+      } else {
+        result[key] = obj2[key];
+      }
+    }
+  }
+
+  return result;
+}
+const obj1 = { a: { b: 2, arr: [1, 2] }, c: 3 };
+const obj2 = { a: { b: 4, d: 5, arr: [3, 4] }, e: 6 };
+console.log(deepMerge(obj1, obj2));
+
+//10.Create a function that performs a binary search on a sorted array and returns the index of the target element.
+function binarySearch(arr, target) {
+  let left = 0;
+  let right = arr.length - 1;
+  while (left <= right) {
+    const mid = Math.floor((left + right) / 2);
+    if (arr[mid] === target) {
+      return mid;
+    } else if (arr[mid] < target) {
+      left = mid + 1;
+    } else {
+      right = mid - 1;
+    }
+  }
+  return -1;
+}
+const sortedArray = [1, 3, 5, 7, 9, 11, 13];
+console.log(binarySearch(sortedArray, 7));
+console.log(binarySearch(sortedArray, 2));
